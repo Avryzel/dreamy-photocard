@@ -8,6 +8,10 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -30,7 +34,7 @@ class MsPhotocardResource extends Resource {
         return $schema
             ->components([
                 Forms\Components\Select::make('idGroupBand')
-                    ->relationship('groupBand', 'nama')
+                    ->relationship('groupBand', 'nama_group') 
                     ->required()
                     ->searchable()
                     ->preload()
@@ -61,7 +65,7 @@ class MsPhotocardResource extends Resource {
                     ->image()
                     ->directory('photocards')
                     ->label('Foto Produk')
-                        >columnSpanFull(),
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -76,28 +80,31 @@ class MsPhotocardResource extends Resource {
                     ->sortable()
                     ->label('Nama'),
 
-                \Filament\Tables\Columns\TextColumn::make('groupBand.nama')
-                    ->label('Band'),
+                \Filament\Tables\Columns\TextColumn::make('groupBand.nama_group')
+                    ->label('Band')
+                    ->sortable()
+                    ->searchable(),
 
                 \Filament\Tables\Columns\TextColumn::make('harga_pc')
                     ->money('IDR')
-                    ->label('Harga'),
+                    ->label('Harga')
+                    ->sortable(),
 
                 \Filament\Tables\Columns\TextColumn::make('stock_pc')
                     ->numeric()
                     ->label('Stok'),
             ])
-
             ->filters([
                 //
             ])
-                
-            ->actions([
-                // 
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-
-            ->bulkActions([
-                //
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
+                ]),
             ]);
     }
 
