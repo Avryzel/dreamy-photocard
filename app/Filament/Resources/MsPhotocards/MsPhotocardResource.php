@@ -1,118 +1,109 @@
-    <?php
+<?php
 
-    namespace App\Filament\Resources\MsPhotocards;
+namespace App\Filament\Resources\MsPhotocards;
 
-    use App\Filament\Resources\MsPhotocards\Pages\ManageMsPhotocards;
-    use App\Models\MsPhotocard;
-    use Filament\Resources\Resource;
-    use Filament\Schemas\Schema; // Kita pakai Schema (sesuai sistemmu)
-    use Filament\Support\Icons\Heroicon;
-    use BackedEnum;
+use App\Filament\Resources\MsPhotocards\Pages\ManageMsPhotocards;
+use App\Models\MsPhotocard;
+use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
+use Filament\Support\Icons\Heroicon;
+use BackedEnum;
 
-    // --- GROUP IMPORT UNTUK FORM ---
-    use Filament\Forms;
-    use Filament\Forms\Form;
+use Filament\Forms;
+use Filament\Forms\Form;
 
-    // --- GROUP IMPORT UNTUK TABLE ---
-    // Kita import induknya saja, biar codingan di bawah lebih rapi
-    use Filament\Tables;
-    use Filament\Tables\Table;
 
-    class MsPhotocardResource extends Resource
-    {
-        protected static ?string $model = MsPhotocard::class;
+use Filament\Tables;
+use Filament\Tables\Table;
 
-        protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+class MsPhotocardResource extends Resource {
+    protected static ?string $model = MsPhotocard::class;
 
-        protected static ?string $recordTitleAttribute = 'nama_pc';
+    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-        protected static ?string $modelLabel = 'Photocard';
-        protected static ?string $pluralModelLabel = 'Photocard';
+    protected static ?string $recordTitleAttribute = 'nama_pc';
 
-        public static function form(Schema $schema): Schema
-        {
-            return $schema
-                ->components([
-                    // Panggil komponen Form pakai awalan Forms\Components\...
-                    Forms\Components\Select::make('idGroupBand')
-                        ->relationship('groupBand', 'nama')
-                        ->required()
-                        ->searchable()
-                        ->preload()
-                        ->label('Grup Band'),
+    protected static ?string $modelLabel = 'Photocard';
+    protected static ?string $pluralModelLabel = 'Photocard';
 
-                    Forms\Components\TextInput::make('nama_pc')
-                        ->required()
-                        ->maxLength(255)
-                        ->label('Nama Photocard'),
+    public static function form(Schema $schema): Schema {
+        return $schema
+            ->components([
+                Forms\Components\Select::make('idGroupBand')
+                    ->relationship('groupBand', 'nama')
+                    ->required()
+                    ->searchable()
+                    ->preload()
+                    ->label('Grup Band'),
 
-                    Forms\Components\TextInput::make('harga_pc')
-                        ->numeric()
-                        ->prefix('Rp')
-                        ->required()
-                        ->label('Harga'),
+                Forms\Components\TextInput::make('nama_pc')
+                    ->required()
+                    ->maxLength(255)
+                    ->label('Nama Photocard'),
 
-                    Forms\Components\TextInput::make('stock_pc')
-                        ->numeric()
-                        ->default(0)
-                        ->required()
-                        ->label('Stok'),
+                Forms\Components\TextInput::make('harga_pc')
+                    ->numeric()
+                    ->prefix('Rp')
+                    ->required()
+                    ->label('Harga'),
 
-                    Forms\Components\Textarea::make('deskripsi_pc')
-                        ->label('Deskripsi')
-                        ->columnSpanFull(),
+                Forms\Components\TextInput::make('stock_pc')
+                    ->numeric()
+                    ->default(0)
+                    ->required()
+                    ->label('Stok'),
 
-                    Forms\Components\FileUpload::make('foto_pc')
-                        ->image()
-                        ->directory('photocards')
-                        ->label('Foto Produk')
-                        ->columnSpanFull(),
-                ]);
-        }
+                Forms\Components\Textarea::make('deskripsi_pc')
+                    ->label('Deskripsi')
+                    ->columnSpanFull(),
 
-        public static function table(Table $table): Table
-        {
-            return $table
-                ->columns([
-                    // ... (Biarkan kolom-kolom kamu tetap ada) ...
-                    \Filament\Tables\Columns\ImageColumn::make('foto_pc')
-                        ->label('Foto'),
-
-                    \Filament\Tables\Columns\TextColumn::make('nama_pc')
-                        ->searchable()
-                        ->sortable()
-                        ->label('Nama'),
-
-                    \Filament\Tables\Columns\TextColumn::make('groupBand.nama')
-                        ->label('Band'),
-
-                    \Filament\Tables\Columns\TextColumn::make('harga_pc')
-                        ->money('IDR')
-                        ->label('Harga'),
-
-                    \Filament\Tables\Columns\TextColumn::make('stock_pc')
-                        ->numeric()
-                        ->label('Stok'),
-                ])
-                ->filters([
-                    //
-                ])
-                // --- KITA KOSONGKAN DULU TOMBOLNYA ---
-                ->actions([
-                    // \Filament\Tables\Actions\EditAction::make(),   <-- Kasih // di depannya
-                    // \Filament\Tables\Actions\DeleteAction::make(), <-- Kasih // di depannya
-                ])
-                ->bulkActions([
-                    // \Filament\Tables\Actions\BulkActionGroup::make([
-                    //    \Filament\Tables\Actions\DeleteBulkAction::make(),
-                    // ]),
-                ]);
-        }
-
-        public static function getPages(): array
-        {
-            return [
-                'index' => ManageMsPhotocards::route('/'),
-            ];
-        }
+                Forms\Components\FileUpload::make('foto_pc')
+                    ->image()
+                    ->directory('photocards')
+                    ->label('Foto Produk')
+                        >columnSpanFull(),
+            ]);
     }
+
+    public static function table(Table $table): Table {
+        return $table
+            ->columns([
+                \Filament\Tables\Columns\ImageColumn::make('foto_pc')
+                    ->label('Foto'),
+
+                \Filament\Tables\Columns\TextColumn::make('nama_pc')
+                    ->searchable()
+                    ->sortable()
+                    ->label('Nama'),
+
+                \Filament\Tables\Columns\TextColumn::make('groupBand.nama')
+                    ->label('Band'),
+
+                \Filament\Tables\Columns\TextColumn::make('harga_pc')
+                    ->money('IDR')
+                    ->label('Harga'),
+
+                \Filament\Tables\Columns\TextColumn::make('stock_pc')
+                    ->numeric()
+                    ->label('Stok'),
+            ])
+
+            ->filters([
+                //
+            ])
+                
+            ->actions([
+                // 
+            ])
+
+            ->bulkActions([
+                //
+            ]);
+    }
+
+    public static function getPages(): array {
+        return [
+            'index' => ManageMsPhotocards::route('/'),
+        ];
+    }
+}
