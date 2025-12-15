@@ -9,10 +9,12 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
@@ -23,10 +25,9 @@ class MsGrupBandResource extends Resource
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
-    protected static ?string $recordTitleAttribute = 'nama_group';
-
-   protected static ?string $modelLabel = 'Group Band';
-    protected static ?string $pluralModelLabel = 'Group Photocard';
+    protected static ?string $navigationLabel = 'Group Photocard';
+    protected static ?string $modelLabel = 'Group';
+    protected static ?string $pluralModelLabel = 'Data Group';
 
     public static function canAccess(): bool
     {
@@ -40,7 +41,15 @@ class MsGrupBandResource extends Resource
     {
         return $schema
             ->components([
+                FileUpload::make('logo')
+                    ->label('Group Logo')
+                    ->directory('logo-grup')
+                    ->image()
+                    ->imageEditor()
+                    ->columnSpanFull(),
+
                 TextInput::make('nama_group')
+                    ->label('Group Name')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -51,17 +60,23 @@ class MsGrupBandResource extends Resource
         return $table
             ->recordTitleAttribute('nama_group')
             ->columns([
+                ImageColumn::make('logo')
+                    ->label('Logo')
+                    ->circular(),
+
                 TextColumn::make('nama_group')
-                    ->searchable(),
+                    ->label('Group Name')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //
             ])
-            ->recordActions([
+            ->actions([
                 EditAction::make(),
                 DeleteAction::make(),
             ])
-            ->toolbarActions([
+            ->bulkActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),

@@ -9,9 +9,8 @@ class MsGrupBand extends Model
 { 
     use HasFactory;
     
-    protected $table = 'ms_grup_band'; 
+    protected $table = 'ms_grup_band';
+    protected $guarded = [];
     protected $primaryKey = 'idGroupBand'; 
-    public $incrementing = true; 
-
-    protected $fillable = ['nama_group'];
+    public $incrementing = true;
 }

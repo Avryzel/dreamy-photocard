@@ -14,6 +14,7 @@ return new class extends Migration
        Schema::create('ms_grup_band', function (Blueprint $table) {
             $table->id('idGroupBand'); 
             $table->string('nama_group');
+            $table->string('logo')->nullable();
             $table->timestamps();
         });
     }
