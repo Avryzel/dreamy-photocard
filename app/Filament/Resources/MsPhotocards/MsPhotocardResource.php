@@ -38,7 +38,7 @@ class MsPhotocardResource extends Resource {
                     ->required()
                     ->searchable()
                     ->preload()
-                    ->label('Grup Band'),
+                    ->label('Group'),
 
                 Forms\Components\TextInput::make('nama_pc')
                     ->required()
