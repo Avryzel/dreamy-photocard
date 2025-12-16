@@ -13,6 +13,11 @@ class TrxDetailPesanan extends Model
     protected $table = 'trx_detail_pesanan';
     protected $guarded = [];
 
+    public function pesanan(): BelongsTo
+    {
+        return $this->belongsTo(TrxPesanan::class, 'idPesanan', 'idPesanan');
+    }
+
     public function photocard(): BelongsTo
     {
         return $this->belongsTo(MsPhotocard::class, 'ms_photocard_id');

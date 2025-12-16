@@ -49,7 +49,7 @@ class FrontController extends Controller
 
         foreach ($request->items as $item) {
             TrxDetailPesanan::create([
-                'trx_pesanan_id'  => $trx->idPesanan,
+                'idPesanan'  => $trx->idPesanan,
                 'ms_photocard_id' => $item['photocard_id'],
                 'qty'             => $item['qty'],
                 'subtotal'        => $item['subtotal'],
