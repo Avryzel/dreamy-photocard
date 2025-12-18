@@ -31,6 +31,7 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'role',          
         'nomor_hp',
         'foto_profil',
+        'email_verified_at',
     ];
 
     /**
@@ -58,7 +59,17 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $this->role === 'admin';
+        $role = trim($this->role ?? '');
+
+        if ($panel->getId() === 'admin') {
+            return $role === 'admin';
+        }
+
+        if ($panel->getId() === 'customer') {
+            return $role === 'pelanggan' || $role === 'admin';
+        }
+
+        return false;
     }
 
     public function getNameAttribute()
