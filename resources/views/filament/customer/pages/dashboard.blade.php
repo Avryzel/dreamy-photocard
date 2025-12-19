@@ -79,7 +79,7 @@
         <div class="section-title">LATEST PHOTOCARD</div>
         <section class="album-grid">
             @foreach($latestProducts as $product)
-                <a href="{{ App\Filament\Customer\Pages\ProductDetail::getUrl(['id' => $product->id]) }}" class="album-card">
+                <a href="{{ route('filament.customer.pages.product-detail', ['id' => $product->idPhotocard]) }}" class="album-card">
                     <div class="album-image">
                         @if($product->foto_pc)
                             <img src="{{ asset('storage/' . $product->foto_pc) }}" alt="{{ $product->nama_pc }}">
@@ -99,7 +99,7 @@
         <div class="section-title">BEST SELLER</div>
         <section class="album-grid">
             @foreach($bestSellers as $product)
-                <a href="{{ App\Filament\Customer\Pages\ProductDetail::getUrl(['id' => $product->id]) }}" class="album-card">
+                <a href="{{ route('filament.customer.pages.product-detail', ['id' => $product->idPhotocard]) }}" class="album-card">
                     <div class="album-image">
                         @if($product->foto_pc)
                             <img src="{{ asset('storage/' . $product->foto_pc) }}" alt="{{ $product->nama_pc }}">
