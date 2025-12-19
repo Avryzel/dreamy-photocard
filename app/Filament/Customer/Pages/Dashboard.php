@@ -6,7 +6,9 @@ use Filament\Pages\Dashboard as BaseDashboard;
 use App\Models\MsPhotocard; 
 
 class Dashboard extends BaseDashboard {
-    protected static ?string $title = 'Dreamy Store';
+    protected static ?string $title = 'Dreamy Photocard';
+
+    protected static ?string $slug = '/';
 
     protected ?string $heading = ''; 
 
