@@ -31,15 +31,21 @@ class CustomerPanelProvider extends PanelProvider
             ])
             ->login()
             ->registration(Register::class)
+            
+            ->topNavigation()
+            ->breadcrumbs(false)
+            
             ->discoverResources(in: app_path('Filament/Customer/Resources'), for: 'App\\Filament\\Customer\\Resources')
             ->discoverPages(in: app_path('Filament/Customer/Pages'), for: 'App\\Filament\\Customer\\Pages')
+            
             ->pages([
-                Pages\Dashboard::class,
             ])
+            
             ->discoverWidgets(in: app_path('Filament/Customer/Widgets'), for: 'App\\Filament\\Customer\\Widgets')
+            
             ->widgets([
-                Widgets\AccountWidget::class,
             ])
+            
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
