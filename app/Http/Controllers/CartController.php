@@ -15,7 +15,9 @@ class CartController extends Controller
             ->where('idUser', Auth::id())
             ->get();
 
-        return view('cart.index', compact('cartItems'));
+        $total = $cartItems->sum('subtotal');
+
+        return view('dreamy-store.cart.index', compact('cartItems', 'total'));
     }
 
     public function store(Request $request)
@@ -27,12 +29,10 @@ class CartController extends Controller
 
         $photocard = MsPhotocard::findOrFail($request->id_photocard);
 
-        // Check stock
-        if ($photocard->stok < $request->quantity) {
+        if ($photocard->stock_pc < $request->quantity) {
             return back()->with('error', 'Stok tidak mencukupi');
         }
 
-        // Check if item already in cart
         $existingCartItem = TrxKeranjang::where('idUser', Auth::id())
             ->where('idPhotocard', $request->id_photocard)
             ->first();
@@ -40,18 +40,21 @@ class CartController extends Controller
         if ($existingCartItem) {
             $newQuantity = $existingCartItem->jumlah_item + $request->quantity;
 
-            if ($photocard->stok < $newQuantity) {
+            if ($photocard->stock_pc < $newQuantity) {
                 return back()->with('error', 'Stok tidak mencukupi untuk jumlah total');
             }
 
-            $existingCartItem->update(['jumlah_item' => $newQuantity]);
+            $existingCartItem->update([
+                'jumlah_item' => $newQuantity,
+                'subtotal' => $photocard->harga_pc * $newQuantity
+            ]);
         } else {
             TrxKeranjang::create([
                 'idUser' => Auth::id(),
                 'idPhotocard' => $request->id_photocard,
                 'jumlah_item' => $request->quantity,
-                'harga_satuan' => $photocard->harga,
-                'subtotal' => $photocard->harga * $request->quantity
+                'harga_satuan' => $photocard->harga_pc,
+                'subtotal' => $photocard->harga_pc * $request->quantity
             ]);
         }
 
@@ -67,12 +70,10 @@ class CartController extends Controller
 
         $photocard = MsPhotocard::findOrFail($request->id_photocard);
 
-        // Check stock
-        if ($photocard->stok < $request->quantity) {
+        if ($photocard->stock_pc < $request->quantity) {
             return back()->with('error', 'Stok tidak mencukupi');
         }
 
-        // Check if item already in cart
         $existingCartItem = TrxKeranjang::where('idUser', Auth::id())
             ->where('idPhotocard', $request->id_photocard)
             ->first();
@@ -80,18 +81,21 @@ class CartController extends Controller
         if ($existingCartItem) {
             $newQuantity = $existingCartItem->jumlah_item + $request->quantity;
 
-            if ($photocard->stok < $newQuantity) {
-                return back()->with('error', 'Stok tidak mencukupi untuk jumlah total');
+            if ($photocard->stock_pc < $newQuantity) {
+                return back()->with('error', 'Stok tidak mencukupi');
             }
 
-            $existingCartItem->update(['jumlah_item' => $newQuantity]);
+            $existingCartItem->update([
+                'jumlah_item' => $newQuantity,
+                'subtotal' => $photocard->harga_pc * $newQuantity
+            ]);
         } else {
             TrxKeranjang::create([
                 'idUser' => Auth::id(),
                 'idPhotocard' => $request->id_photocard,
                 'jumlah_item' => $request->quantity,
-                'harga_satuan' => $photocard->harga,
-                'subtotal' => $photocard->harga * $request->quantity
+                'harga_satuan' => $photocard->harga_pc,
+                'subtotal' => $photocard->harga_pc * $request->quantity
             ]);
         }
 
@@ -110,13 +114,13 @@ class CartController extends Controller
 
         $photocard = $cartItem->photocard;
 
-        if ($photocard->stok < $request->quantity) {
+        if ($photocard->stock_pc < $request->quantity) {
             return back()->with('error', 'Stok tidak mencukupi');
         }
 
         $cartItem->update([
             'jumlah_item' => $request->quantity,
-            'subtotal' => $photocard->harga * $request->quantity
+            'subtotal' => $photocard->harga_pc * $request->quantity
         ]);
 
         return back()->with('success', 'Keranjang berhasil diperbarui');

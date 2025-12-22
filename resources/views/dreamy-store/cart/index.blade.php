@@ -47,7 +47,7 @@
     <div class="header">🛒 Keranjang Belanja</div>
 
     <div class="container">
-        <a href="/member" class="back">← Kembali belanja</a>
+        <a href="/" class="back">← Kembali belanja</a>
 
         @if($cartItems->count() > 0)
             <div id="cart">

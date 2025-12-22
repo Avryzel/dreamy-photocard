@@ -19,7 +19,7 @@ class ProfileController extends Controller
                     ->orderBy('created_at', 'desc')
                     ->get();
 
-        return view('profile.index', compact('user', 'orders'));
+        return view('dreamy-store.profile.index', compact('user', 'orders'));
     }
 
     public function update(Request $request)
