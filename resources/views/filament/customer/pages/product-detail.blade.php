@@ -47,14 +47,40 @@
                     </p>
                 </div>
 
-                <div style="display: flex; gap: 15px;">
-                    <button style="flex: 1; background: #4f46e5; color: white; padding: 14px; border-radius: 8px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);">
-                        🛒 Masukkan Keranjang
-                    </button>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <label for="quantity" style="font-weight: 600; color: #374151;">Jumlah:</label>
+                        <input type="number" 
+                               id="quantity" 
+                               name="quantity" 
+                               value="1" 
+                               min="1" 
+                               max="{{ $product->stock_pc }}" 
+                               style="width: 80px; padding: 8px; border: 1px solid #d1d5db; border-radius: 6px; text-align: center;">
+                    </div>
+                    
+                    <form method="POST" action="{{ route('add-to-cart-detail') }}" style="flex: 1;">
+                        @csrf
+                        <input type="hidden" name="id_photocard" value="{{ $product->idPhotocard }}">
+                        <input type="hidden" name="quantity" id="form-quantity" value="1">
+                        
+                        <button type="submit" 
+                                style="width: 100%; background: #4f46e5; color: white; padding: 14px; border-radius: 8px; border: none; font-weight: bold; font-size: 1rem; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2);"
+                                @if($product->stock_pc <= 0) disabled style="background: #9ca3af; cursor: not-allowed;" @endif>
+                            🛒 Masukkan Keranjang
+                        </button>
+                    </form>
                 </div>
 
             </div>
         </div>
 
     </div>
+
+    <script>
+        // Sync quantity input with hidden form field
+        document.getElementById('quantity').addEventListener('input', function() {
+            document.getElementById('form-quantity').value = this.value;
+        });
+    </script>
 </x-filament-panels::page>

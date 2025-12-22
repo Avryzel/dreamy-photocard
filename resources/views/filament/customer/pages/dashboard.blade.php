@@ -56,6 +56,7 @@
             <div class="store-logo">✨ DREAMY STORE</div>
             <div class="auth-buttons">
                 @auth
+                    <a href="{{ route('cart') }}" class="btn-login" style="margin-right: 10px;">🛒 Keranjang</a>
                     <span style="color: #555; margin-right: 10px;">Hi, {{ auth()->user()->name }}! 👋</span>
                 @else
                     <a href="/member/login" class="btn-login">Masuk</a>
@@ -91,6 +92,16 @@
                         <div class="album-title">{{ $product->nama_pc }}</div>
                         <div class="album-price">Rp {{ number_format($product->harga_pc, 0, ',', '.') }}</div>
                         <span class="stok-badge">Stok: {{ $product->stock_pc }}</span>
+                        @auth
+                            <form action="{{ route('add-to-cart') }}" method="POST" style="margin-top: 8px;">
+                                @csrf
+                                <input type="hidden" name="id_photocard" value="{{ $product->idPhotocard }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="w-full bg-blue-500 text-white py-1 px-3 rounded text-sm hover:bg-blue-600">
+                                    Add to Cart
+                                </button>
+                            </form>
+                        @endauth
                     </div>
                 </a>
             @endforeach
@@ -110,6 +121,16 @@
                     <div class="album-info">
                         <div class="album-title">{{ $product->nama_pc }}</div>
                         <div class="album-price">Rp {{ number_format($product->harga_pc, 0, ',', '.') }}</div>
+                        @auth
+                            <form action="{{ route('add-to-cart') }}" method="POST" style="margin-top: 8px;">
+                                @csrf
+                                <input type="hidden" name="id_photocard" value="{{ $product->idPhotocard }}">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="w-full bg-blue-500 text-white py-1 px-3 rounded text-sm hover:bg-blue-600">
+                                    Add to Cart
+                                </button>
+                            </form>
+                        @endauth
                     </div>
                 </a>
             @endforeach
