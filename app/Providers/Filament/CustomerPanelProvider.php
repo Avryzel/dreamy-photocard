@@ -10,6 +10,7 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Navigation\MenuItem;
 use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -28,6 +29,12 @@ class CustomerPanelProvider extends PanelProvider
             ->path('member')
             ->colors([
                 'primary' => Color::Amber,
+            ])
+            ->userMenuItems([
+                MenuItem::make()
+                    ->label('Profile Saya')
+                    ->url(fn (): string => route('profile.index'))
+                    ->icon('heroicon-o-user'),
             ])
             ->login()
             ->registration(Register::class)
