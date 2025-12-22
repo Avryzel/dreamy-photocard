@@ -8,7 +8,6 @@ use BackedEnum;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -75,11 +74,19 @@ class TrxPesananResource extends Resource
                 Repeater::make('details')
                     ->relationship('details')
                     ->schema([
-                        Select::make('ms_photocard_id')
-                            ->relationship('photocard', 'nama_photocard')
+                        Select::make('idPhotocard')
+                            ->label('Photocard')
+                            ->relationship('photocard', 'nama_pc')
                             ->disabled(),
-                        TextInput::make('qty')->disabled(),
-                        TextInput::make('subtotal')->prefix('Rp')->disabled(),
+
+                        TextInput::make('jumlah')
+                            ->label('Qty')
+                            ->disabled(),
+
+                        TextInput::make('harga_per_item')
+                            ->label('Harga Satuan')
+                            ->prefix('Rp')
+                            ->disabled(),
                     ])
                     ->addable(false)
                     ->deletable(false)
