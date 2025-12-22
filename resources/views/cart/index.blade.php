@@ -94,23 +94,26 @@
                     Total: Rp {{ number_format($cartItems->sum('subtotal'), 0, ',', '.') }}
                 </div>
 
-                <div class="checkout">
-                    @php
-                        // Logic Membuat Pesan WhatsApp Otomatis dari Data Database
-                        $adminPhone = "6281296724544"; // GANTI NOMOR ADMIN DI SINI
-                        $message = "Halo Admin Dreamy 👋\n\nSaya ingin memesan:\n\n";
-                        foreach($cartItems as $index => $item) {
-                            $message .= ($index + 1) . ". " . $item->photocard->nama_pc . "\n";
-                            $message .= "   Qty: " . $item->jumlah_item . "\n";
-                            $message .= "   Subtotal: Rp " . number_format($item->subtotal, 0, ',', '.') . "\n\n";
-                        }
-                        $message .= "Total: Rp " . number_format($cartItems->sum('subtotal'), 0, ',', '.') . "\n";
-                        $message .= "Mohon diproses ya! 🙏";
-                        
-                        $waUrl = "https://wa.me/" . $adminPhone . "?text=" . urlencode($message);
-                    @endphp
+                <div class="checkout" style="text-align: left; margin-top: 30px; border-top: 2px dashed #eee; padding-top: 20px;">
+                    <div style="background: #f0fdf4; border: 1px solid #bbf7d0; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                        <p style="margin: 0; font-size: 14px; color: #166534;">
+                            <strong style="display: block; margin-bottom: 4px;">Pemesanan atas nama:</strong>
+                            👤 {{ auth()->user()->name }} <br>
+                            📧 {{ auth()->user()->email }}
+                        </p>
+                    </div>
 
-                    <a href="{{ $waUrl }}" target="_blank" class="checkout-btn">Checkout via WhatsApp</a>
+                    <form action="{{ route('checkout.process') }}" method="POST">
+                        @csrf
+                        <div style="text-align: right;">
+                            <button type="submit" class="checkout-btn" style="width: 100%; text-align: center; font-size: 18px; padding: 15px;">
+                                🚀 Checkout Sekarang
+                            </button>
+                            <p style="text-align: center; font-size: 12px; color: #888; margin-top: 10px;">
+                                Klik tombol di atas untuk terhubung ke WhatsApp Admin
+                            </p>
+                        </div>
+                    </form>
                 </div>
             </div>
         @else

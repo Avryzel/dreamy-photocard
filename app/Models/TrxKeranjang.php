@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\MsPhotocard;
 
 class TrxKeranjang extends Model
 {
@@ -34,6 +35,10 @@ class TrxKeranjang extends Model
 
     public function photocard()
     {
-        return $this->belongsTo(MsPhotocard::class, 'idPhotocard', 'idPhotocard');
+        return $this->belongsTo(
+            MsPhotocard::class, 
+            'idPhotocard',
+            'idPhotocard'
+        );
     }
 }
