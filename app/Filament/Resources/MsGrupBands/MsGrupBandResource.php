@@ -23,11 +23,11 @@ class MsGrupBandResource extends Resource
 {
     protected static ?string $model = MsGrupBand::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static ?string $navigationLabel = 'Kategori Produk';
+    protected static ?string $pluralLabel = 'Kategori Produk';
+    protected static ?string $modelLabel = 'Kategori';
 
-    protected static ?string $navigationLabel = 'Group Photocard';
-    protected static ?string $modelLabel = 'Group';
-    protected static ?string $pluralModelLabel = 'Data Group';
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     public static function canAccess(): bool
     {
@@ -49,7 +49,7 @@ class MsGrupBandResource extends Resource
                     ->columnSpanFull(),
 
                 TextInput::make('nama_group')
-                    ->label('Group Name')
+                    ->label('Nama Kategori')
                     ->required()
                     ->maxLength(255),
             ]);
@@ -65,7 +65,7 @@ class MsGrupBandResource extends Resource
                     ->circular(),
 
                 TextColumn::make('nama_group')
-                    ->label('Group Name')
+                    ->label('Nama Kategori')
                     ->searchable()
                     ->sortable(),
             ])

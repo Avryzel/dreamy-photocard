@@ -21,9 +21,12 @@ use Illuminate\Support\Facades\Auth;
 class TrxPesananResource extends Resource
 {
     protected static ?string $model = TrxPesanan::class;
+
+    protected static ?string $navigationLabel = 'Riwayat Pesanan';
+    protected static ?string $pluralLabel = 'Riwayat Pesanan';
+    protected static ?string $modelLabel = 'Pesanan';
+
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedShoppingCart;
-    protected static ?string $navigationLabel = 'Orders';
-    protected static ?string $modelLabel = 'Order';
 
     public static function canAccess(): bool
     {

@@ -24,10 +24,11 @@ class MsPhotocardResource extends Resource
 {
     protected static ?string $model = MsPhotocard::class;
 
-    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Koleksi Produk';
+    protected static ?string $pluralLabel = 'Koleksi Produk';
+    protected static ?string $modelLabel = 'Produk';
 
-    protected static ?string $navigationLabel = 'Photocards';
-    protected static ?string $modelLabel = 'Photocard';
+    protected static string | BackedEnum | null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Schema $schema): Schema
     {
