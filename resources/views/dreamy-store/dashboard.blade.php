@@ -88,6 +88,7 @@
                 </form>
             @else
                 <a href="{{ route('login') }}" class="auth-text">Login</a>
+                <a href="{{ route('register') }}" class="auth-text auth-register">Daftar</a>
             @endauth
         </div>
     </header>
