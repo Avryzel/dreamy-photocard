@@ -149,13 +149,18 @@
                     <button type="submit" class="icon-btn" title="Sign Out" onclick="return confirm('Yakin ingin keluar?')">🚪</button>
                 </form>
             @else
-                <a href="/member/login" class="auth-text">Login</a>
-                <a href="/member/register" class="auth-text" style="background: white; color: #9FA8DA;">Daftar</a>
+                <a href="{{ route('login') }}" class="auth-text">Login</a>
+                <a href="{{ route('register') }}" class="auth-text" style="background: white; color: #9FA8DA;">Daftar</a>
             @endauth
         </div>
     </header>
 
     <div class="main-container">
+        @if(session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 max-w-xl mx-auto text-center">
+                {{ session('success') }}
+            </div>
+        @endif
 
         <section class="hero-image">
             <img src="https://placehold.co/1200x400/9FA8DA/ffffff?text=DREAMY+K-POP+STORE" alt="Banner">
@@ -172,14 +177,16 @@
         <div class="section-title">LATEST PHOTOCARD</div>
         <section class="album-grid">
             @foreach($latestProducts as $product)
-                <a href="{{ route('product.detail', $product->idPhotocard) }}" class="album-card" data-title="{{ $product->nama_pc }} {{ $product->deskripsi_pc }}">
-                    <div class="album-image">
-                        @if($product->foto_pc)
-                            <img src="{{ asset('storage/' . $product->foto_pc) }}" alt="{{ $product->nama_pc }}">
-                        @else
-                            <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#999; background:#eee;">No Image</div>
-                        @endif
-                    </div>
+                <div class="album-card" data-title="{{ $product->nama_pc }} {{ $product->deskripsi_pc }}">
+                    <a href="{{ route('product.detail', $product->idPhotocard) }}">
+                        <div class="album-image">
+                            @if($product->foto_pc)
+                                <img src="{{ asset('storage/' . $product->foto_pc) }}" alt="{{ $product->nama_pc }}">
+                            @else
+                                <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#999; background:#eee;">No Image</div>
+                            @endif
+                        </div>
+                    </a>
                     <div class="album-info">
                         <div>
                             <div class="album-title">{{ $product->nama_pc }}</div>
@@ -188,7 +195,7 @@
                         </div>
                         
                         @auth
-                            <form action="{{ route('add-to-cart') }}" method="POST" onclick="event.stopPropagation();">
+                            <form action="{{ route('add-to-cart') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="id_photocard" value="{{ $product->idPhotocard }}">
                                 <input type="hidden" name="quantity" value="1">
@@ -196,28 +203,30 @@
                             </form>
                         @endauth
                     </div>
-                </a>
+                </div>
             @endforeach
         </section>
 
         <div class="section-title">BEST SELLER</div>
         <section class="album-grid">
             @foreach($bestSellers as $product)
-                <a href="{{ route('product.detail', $product->idPhotocard) }}" class="album-card" data-title="{{ $product->nama_pc }} {{ $product->deskripsi_pc }}">
-                    <div class="album-image">
-                        @if($product->foto_pc)
-                            <img src="{{ asset('storage/' . $product->foto_pc) }}" alt="{{ $product->nama_pc }}">
-                        @else
-                            <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#999; background:#eee;">No Image</div>
-                        @endif
-                    </div>
+                <div class="album-card" data-title="{{ $product->nama_pc }} {{ $product->deskripsi_pc }}">
+                    <a href="{{ route('product.detail', $product->idPhotocard) }}">
+                        <div class="album-image">
+                            @if($product->foto_pc)
+                                <img src="{{ asset('storage/' . $product->foto_pc) }}" alt="{{ $product->nama_pc }}">
+                            @else
+                                <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#999; background:#eee;">No Image</div>
+                            @endif
+                        </div>
+                    </a>
                     <div class="album-info">
                         <div>
                             <div class="album-title">{{ $product->nama_pc }}</div>
                             <div class="album-price">Rp {{ number_format($product->harga_pc, 0, ',', '.') }}</div>
                         </div>
                         @auth
-                            <form action="{{ route('add-to-cart') }}" method="POST" onclick="event.stopPropagation();">
+                            <form action="{{ route('add-to-cart') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="id_photocard" value="{{ $product->idPhotocard }}">
                                 <input type="hidden" name="quantity" value="1">
@@ -225,10 +234,9 @@
                             </form>
                         @endauth
                     </div>
-                </a>
+                </div>
             @endforeach
         </section>
-
     </div>
 
     <script>

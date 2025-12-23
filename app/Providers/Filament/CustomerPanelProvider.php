@@ -1,72 +1,63 @@
 <?php
 
-namespace App\Providers\Filament;
+namespace App\Http\Controllers\Auth;
 
-use App\Filament\Customer\Pages\Auth\Register;
-use Filament\Http\Middleware\Authenticate;
-use Filament\Http\Middleware\DisableBladeIconComponents;
-use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
-use Filament\Panel;
-use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
-use Filament\Navigation\MenuItem;
-use Filament\Widgets;
-use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
-use Illuminate\Cookie\Middleware\EncryptCookies;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
-use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Session\Middleware\AuthenticateSession;
-use Illuminate\Session\Middleware\StartSession;
-use Illuminate\View\Middleware\ShareErrorsFromSession;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
-class CustomerPanelProvider extends PanelProvider
+class CustomerAuthController extends Controller
 {
-    public function panel(Panel $panel): Panel
+    public function showLoginForm()
     {
-        return $panel
-            ->id('customer')
-            ->path('member')
-            ->colors([
-                'primary' => Color::Amber,
-            ])
-            ->userMenuItems([
-                MenuItem::make()
-                    ->label('Profile Saya')
-                    ->url(fn (): string => route('profile.index'))
-                    ->icon('heroicon-o-user'),
-            ])
-            ->login()
-            ->registration(Register::class)
+        return view('dreamy-store.auth.customer-login');
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
             
-            ->topNavigation()
-            ->breadcrumbs(false)
-            
-            ->discoverResources(in: app_path('Filament/Customer/Resources'), for: 'App\\Filament\\Customer\\Resources')
-            ->discoverPages(in: app_path('Filament/Customer/Pages'), for: 'App\\Filament\\Customer\\Pages')
-            
-            ->pages([
-                
-            ])
-            
-            ->discoverWidgets(in: app_path('Filament/Customer/Widgets'), for: 'App\\Filament\\Customer\\Widgets')
-            
-            ->widgets([
-            ])
-            
-            ->middleware([
-                EncryptCookies::class,
-                AddQueuedCookiesToResponse::class,
-                StartSession::class,
-                AuthenticateSession::class,
-                ShareErrorsFromSession::class,
-                VerifyCsrfToken::class,
-                SubstituteBindings::class,
-                DisableBladeIconComponents::class,
-                DispatchServingFilamentEvent::class,
-            ])
-            ->authMiddleware([
-                // Authenticate::class,
-            ]);
+            return redirect('/')->with('success', 'Selamat datang kembali!'); 
+        }
+
+        return back()->withErrors([
+            'email' => 'Email atau password yang kamu masukkan salah.',
+        ])->withInput($request->only('email'));
+    }
+
+    public function showRegisterForm()
+    {
+        return view('dreamy-store.auth.customer-register');
+    }
+
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'username' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:Ms_User,email',
+            'password' => 'required|string|min:8|confirmed',
+            'nomor_hp' => 'required|string|max:15',
+        ]);
+
+        $user = User::create([
+            'username' => $validated['username'],
+            'email' => $validated['email'],
+            'nomor_hp' => $validated['nomor_hp'],
+            'password' => Hash::make($validated['password']),
+            'role' => 'pelanggan',
+            'email_verified_at' => now(), 
+        ]);
+
+        Auth::login($user);
+
+        return redirect('/')->with('success', 'Akun berhasil dibuat! Selamat belanja.');
     }
 }
