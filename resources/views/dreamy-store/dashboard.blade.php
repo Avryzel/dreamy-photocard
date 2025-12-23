@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DREAMY STORE</title>
+    <title>Dreamy Store</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -238,6 +238,14 @@
             @endforeach
         </section>
     </div>
+
+    <footer style="background: linear-gradient(135deg, #9FA8DA, #B39DDB); padding: 40px 20px; text-align: center; color: white; margin-top: 50px; box-shadow: 0 -4px 10px rgba(0,0,0,0.05);">
+        <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;">✨ DREAMY STORE</div>
+        <p style="font-size: 13px; opacity: 0.9; margin-bottom: 15px;">Pusat koleksi photocard original dan terpercaya untuk melengkapi koleksi bias kamu.</p>
+        <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 15px; font-size: 12px; opacity: 0.8;">
+            &copy; 2025 Dreamy Store Official. Made with Deliberate Effort.
+        </div>
+    </footer>
 
     <script>
         function searchProduct() {
