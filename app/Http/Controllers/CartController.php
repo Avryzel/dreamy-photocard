@@ -28,12 +28,13 @@ class CartController extends Controller
         ]);
 
         $photocard = MsPhotocard::findOrFail($request->id_photocard);
+        $userId = Auth::id();
 
         if ($photocard->stock_pc < $request->quantity) {
             return back()->with('error', 'Stok tidak mencukupi');
         }
 
-        $existingCartItem = TrxKeranjang::where('idUser', Auth::id())
+        $existingCartItem = TrxKeranjang::where('idUser', $userId)
             ->where('idPhotocard', $request->id_photocard)
             ->first();
 
@@ -50,56 +51,23 @@ class CartController extends Controller
             ]);
         } else {
             TrxKeranjang::create([
-                'idUser' => Auth::id(),
+                'idUser' => $userId,
                 'idPhotocard' => $request->id_photocard,
                 'jumlah_item' => $request->quantity,
                 'harga_satuan' => $photocard->harga_pc,
                 'subtotal' => $photocard->harga_pc * $request->quantity
             ]);
+        }
+
+        if ($request->action === 'buy_now') {
+            return redirect()->route('cart')->with('success', 'Silahkan lanjut ke pembayaran');
+        }
+
+        if ($request->is('product/*')) {
+            return redirect()->route('cart')->with('success', 'Berhasil ditambah ke keranjang');
         }
 
         return back()->with('success', 'Photocard berhasil ditambahkan ke keranjang');
-    }
-
-    public function addFromDetail(Request $request)
-    {
-        $request->validate([
-            'id_photocard' => 'required|exists:ms_photocard,idPhotocard',
-            'quantity' => 'required|integer|min:1'
-        ]);
-
-        $photocard = MsPhotocard::findOrFail($request->id_photocard);
-
-        if ($photocard->stock_pc < $request->quantity) {
-            return back()->with('error', 'Stok tidak mencukupi');
-        }
-
-        $existingCartItem = TrxKeranjang::where('idUser', Auth::id())
-            ->where('idPhotocard', $request->id_photocard)
-            ->first();
-
-        if ($existingCartItem) {
-            $newQuantity = $existingCartItem->jumlah_item + $request->quantity;
-
-            if ($photocard->stock_pc < $newQuantity) {
-                return back()->with('error', 'Stok tidak mencukupi');
-            }
-
-            $existingCartItem->update([
-                'jumlah_item' => $newQuantity,
-                'subtotal' => $photocard->harga_pc * $newQuantity
-            ]);
-        } else {
-            TrxKeranjang::create([
-                'idUser' => Auth::id(),
-                'idPhotocard' => $request->id_photocard,
-                'jumlah_item' => $request->quantity,
-                'harga_satuan' => $photocard->harga_pc,
-                'subtotal' => $photocard->harga_pc * $request->quantity
-            ]);
-        }
-
-        return redirect()->route('cart')->with('success', 'Photocard berhasil ditambahkan ke keranjang');
     }
 
     public function update(Request $request, $id)

@@ -4,82 +4,144 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $product->nama_pc }} - Dreamy Store</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
+
     <style>
-        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { overflow-y: scroll; }
+        body { font-family: Arial, sans-serif; background: #A9AEE6; line-height: 1.5; }
+
         .topbar {
             background: linear-gradient(135deg, #9FA8DA, #B39DDB);
-            padding: 15px 20px; display: flex; align-items: center; justify-content: space-between;
-            color: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            height: 70px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
-        .btn-back { color: white; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-        .btn-back:hover { text-decoration: underline; }
+        
+        .store-logo { font-size: 1.2rem; font-weight: bold; color: white; text-decoration: none; }
+        .icons { display: flex; gap: 15px; align-items: center; }
+        .icon-btn { font-size: 20px; cursor: pointer; color: white; text-decoration: none; transition: 0.2s; border: none; background: transparent; }
+        .icon-btn:hover { transform: scale(1.1); }
+        
+        .product-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .section-header { font-size: 1.1rem; font-weight: bold; margin-bottom: 12px; border-left: 4px solid #9FA8DA; padding-left: 10px; color: #444; }
+        .info-list { padding-left: 18px; line-height: 1.7; font-size: 14px; color: #555; margin-bottom: 10px; }
+
+        .btn-buy { background: #5865D9; color: white; font-weight: bold; transition: 0.3s; }
+        .btn-buy:hover { background: #4650b8; }
+        .btn-cart { background: #e0e0e0; color: #333; transition: 0.3s; }
+        .btn-cart:hover { background: #d0d0d0; }
     </style>
 </head>
 <body>
 
-    <div class="topbar">
-        <a href="{{ route('home') }}" class="btn-back">
-            <i class="fas fa-arrow-left"></i> Kembali ke Home
-        </a>
-        <div class="font-bold text-xl">✨ Detail Produk</div>
-        <div style="width: 80px;"></div> </div>
+    <header class="topbar">
+        <a href="{{ route('home') }}" class="store-logo">✨ DREAMY STORE</a>
 
-    <div class="max-w-4xl mx-auto p-6 mt-6">
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden flex flex-col md:flex-row">
-            
-            <div class="md:w-1/2 bg-gray-100 flex items-center justify-center p-4">
-                @if($product->foto_pc)
-                    <img src="{{ asset('storage/' . $product->foto_pc) }}" class="max-h-[400px] object-contain rounded-lg shadow-sm">
-                @else
-                    <div class="text-gray-400">Tidak ada gambar</div>
-                @endif
-            </div>
-
-            <div class="md:w-1/2 p-8 flex flex-col justify-between">
-                <div>
-                    <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ $product->nama_pc }}</h1>
-                    <div class="text-2xl font-bold text-indigo-600 mb-4">
-                        Rp {{ number_format($product->harga_pc, 0, ',', '.') }}
-                    </div>
-                    
-                    <div class="mb-6">
-                        <span class="bg-green-100 text-green-800 text-sm font-bold px-3 py-1 rounded-full">
-                            Stok Tersedia: {{ $product->stock_pc }}
-                        </span>
-                    </div>
-
-                    <p class="text-gray-600 leading-relaxed mb-6">
-                        {{ $product->deskripsi_pc ?? 'Tidak ada deskripsi untuk produk ini.' }}
-                    </p>
-                </div>
-
-                <div class="border-t pt-6">
-                    @auth
-                        <form action="{{ route('add-to-cart') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="id_photocard" value="{{ $product->idPhotocard }}">
-                            
-                            <div class="flex items-center gap-4 mb-4">
-                                <label class="font-bold text-gray-700">Jumlah:</label>
-                                <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock_pc }}" 
-                                       class="border rounded-lg px-3 py-2 w-20 text-center focus:ring-2 focus:ring-indigo-400 outline-none">
-                            </div>
-
-                            <button type="submit" class="w-full bg-gradient-to-r from-indigo-400 to-purple-400 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3 rounded-lg shadow-md transition transform hover:scale-105">
-                                <i class="fas fa-shopping-cart mr-2"></i> Masukkan Keranjang
-                            </button>
-                        </form>
+        <div class="icons">
+            @auth
+                <a href="{{ route('cart') }}" class="icon-btn" title="Keranjang">🛒</a>
+                <a href="{{ route('profile.index') }}" class="icon-btn" title="Profile Saya">
+                    @if(auth()->user()->foto_profil)
+                        <img src="{{ asset('storage/' . auth()->user()->foto_profil) }}" style="width:30px; height:30px; border-radius:50%; border:2px solid white; object-fit:cover; vertical-align:middle;">
                     @else
-                        <a href="/member/login" class="block text-center w-full bg-gray-200 text-gray-700 font-bold py-3 rounded-lg hover:bg-gray-300">
-                            Login untuk Membeli
-                        </a>
-                    @endauth
-                </div>
-            </div>
+                        <span style="font-size: 24px;">👤</span>
+                    @endif
+                </a>
+                <form method="POST" action="{{ route('logout') }}" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="icon-btn" title="Sign Out" onclick="return confirm('Yakin ingin keluar?')">🚪</button>
+                </form>
+            @else
+                <a href="{{ route('login') }}" class="text-white font-bold border border-white px-5 py-2 rounded-full hover:bg-white hover:text-[#9FA8DA] transition">Login</a>
+            @endauth
+        </div>
+    </header>
 
+    <div class="product-container">
+        @if(session('success'))
+            <div class="mb-4 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded shadow-sm">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded shadow-sm">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        <div class="flex justify-center mb-8">
+            <img src="{{ asset('storage/' . $product->foto_pc) }}" class="max-w-[320px] w-full rounded-lg shadow-md border">
+        </div>
+
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ $product->nama_pc }}</h1>
+        <div class="text-2xl font-bold text-gray-900 mb-6">
+            Rp {{ number_format($product->harga_pc, 0, ',', '.') }}
+        </div>
+
+        <div class="section-header">Deskripsi Produk</div>
+        <div class="text-gray-600 mb-8 leading-relaxed">
+            {{ $product->deskripsi_pc ?? 'Tidak ada deskripsi untuk produk ini.' }}
+        </div>
+
+        <div class="section-header">Informasi Produk</div>
+        <ul class="info-list list-disc">
+            <li>Gambar photocard hanya digunakan untuk identifikasi produk.</li>
+            <li>Gambar dapat berbeda dengan photocard asli yang diterima.</li>
+            <li>Harga berlaku untuk 1 lembar photocard.</li>
+            <li>Photocard merupakan official/original dari album atau merchandise resmi.</li>
+            <li>Periksa detail produk sebelum membeli.</li>
+            <li>Produk tidak dapat dikembalikan kecuali terdapat kesalahan pengiriman.</li>
+        </ul>
+
+        <div class="pt-2 border-t">
+            @auth
+                <form action="{{ route('add-to-cart') }}" method="POST" class="space-y-4">
+                    @csrf
+                    <input type="hidden" name="id_photocard" value="{{ $product->idPhotocard }}">
+                    
+                    <div class="flex items-center gap-4 py-2">
+                        <label class="font-bold text-gray-700">Jumlah:</label>
+                        <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock_pc }}" 
+                               class="border rounded-lg px-3 py-1 w-20 text-center outline-none focus:ring-2 focus:ring-indigo-400">
+                    </div>
+
+                    <div class="flex flex-col md:flex-row gap-3">
+                        <button type="submit" name="action" value="add_to_cart" class="btn-cart flex-1 py-4 rounded-xl font-bold transition transform hover:scale-[1.01]">
+                            🛒 Tambah ke Keranjang
+                        </button>
+                        <button type="submit" name="action" value="buy_now" class="btn-buy flex-1 py-4 rounded-xl font-bold transition transform hover:scale-[1.01]">
+                            Beli Sekarang
+                        </button>
+                    </div>
+                </form>
+            @else
+                <div class="bg-gray-50 p-6 rounded-xl text-center border border-dashed">
+                    <p class="text-gray-600 mb-4 font-medium">Masuk untuk mulai mengoleksi photocard ini.</p>
+                    <a href="{{ route('login') }}" class="inline-block bg-indigo-500 text-white px-8 py-3 rounded-full font-bold shadow-md hover:bg-indigo-600 transition">
+                        Login untuk Membeli
+                    </a>
+                </div>
+            @endauth
         </div>
     </div>
 
