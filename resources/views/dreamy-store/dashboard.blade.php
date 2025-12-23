@@ -38,13 +38,9 @@
         .auth-text { font-size: 14px; color: white; font-weight: bold; text-decoration: none; border: 1px solid white; padding: 5px 12px; border-radius: 20px; transition: 0.3s; }
         .auth-text:hover { background: white; color: #9FA8DA; }
 
-        .hero-image { width: 100%; height: 280px; overflow: hidden; margin-bottom: 20px; border-radius: 12px; }
+        /* HERO IMAGE: Menampilkan banner iklan kustom [cite: 2025-10-29] */
+        .hero-image { width: 100%; height: 280px; overflow: hidden; margin-bottom: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         .hero-image img { width: 100%; height: 100%; object-fit: cover; }
-
-        .artist-section { padding: 30px 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1200px; margin: auto; }
-        .artist-card { background: #fff; border-radius: 50%; width: 90px; height: 90px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,.1); transition: .3s; cursor: pointer; }
-        .artist-card:hover { transform: scale(1.1); border: 3px solid #B39DDB; }
-        .artist-card img { width: 100%; height: 100%; object-fit: cover; }
 
         .section-title { max-width: 1300px; margin: 30px auto 15px; padding: 0 20px; font-size: 20px; font-weight: bold; color: #444; text-transform: uppercase; letter-spacing: 1px; border-left: 5px solid #9FA8DA; padding-left: 15px; }
 
@@ -67,28 +63,10 @@
         .btn-cart:hover { opacity: 0.9; }
 
         .pagination-container { max-width: 1300px; margin: 40px auto; padding: 0 20px; display: flex; justify-content: center; }
-        
         .custom-pagination nav > div:first-child { display: none; }
-
-        .custom-pagination nav span[aria-current="page"] span { 
-            background-color: #9FA8DA !important; 
-            border-color: #9FA8DA !important; 
-            color: white !important; 
-            border-radius: 8px; 
-        }
-
-        .custom-pagination nav a, .custom-pagination nav span { 
-            border-radius: 8px !important; 
-            margin: 0 3px; 
-            border: 1px solid #e5e7eb; 
-            transition: 0.3s;
-        }
-
-        .custom-pagination nav a:hover { 
-            background-color: #F0F2FF !important; 
-            color: #9FA8DA !important; 
-            border-color: #9FA8DA !important;
-        }
+        .custom-pagination nav span[aria-current="page"] span { background-color: #9FA8DA !important; border-color: #9FA8DA !important; color: white !important; border-radius: 8px; }
+        .custom-pagination nav a, .custom-pagination nav span { border-radius: 8px !important; margin: 0 3px; border: 1px solid #e5e7eb; transition: 0.3s; }
+        .custom-pagination nav a:hover { background-color: #F0F2FF !important; color: #9FA8DA !important; border-color: #9FA8DA !important; }
     </style>
 </head>
 <body>
@@ -122,15 +100,7 @@
         @endif
 
         <section class="hero-image max-w-[1260px] mx-auto">
-            <img src="https://placehold.co/1200x400/9FA8DA/ffffff?text=DREAMY+K-POP+STORE" alt="Banner">
-        </section>
-
-        <section class="artist-section">
-            @foreach(['NCT', 'LESSERAFIM', 'ILLIT', 'ENHYPEN', 'JENNIE', 'ROSE', 'JISOO'] as $artist)
-            <div class="artist-card" onclick="fillSearch('{{ $artist }}')">
-                <img src="https://ui-avatars.com/api/?name={{ $artist }}&background=random&color=fff" alt="{{ $artist }}">
-            </div>
-            @endforeach
+            <img src="{{ asset('assets/Iklan.jpg') }}" alt="Dreamy Banner">
         </section>
 
         <div class="section-title">LATEST PHOTOCARD</div>
@@ -140,7 +110,7 @@
                     <a href="{{ route('product.detail', $product->idPhotocard) }}">
                         <div class="album-image">
                             @if($product->foto_pc)
-                                <img src="{{ asset('storage/' . $product->foto_pc) }}" alt="{{ $product->nama_pc }}">
+                                <img src="{{ asset('storage/' . $product->foto_pc) }}" alt="{{ $product->nama_pc }}" loading="lazy">
                             @else
                                 <div style="height:100%; display:flex; align-items:center; justify-content:center; background:#eee;">No Image</div>
                             @endif
@@ -176,7 +146,7 @@
                     <a href="{{ route('product.detail', $product->idPhotocard) }}">
                         <div class="album-image">
                             @if($product->foto_pc)
-                                <img src="{{ asset('storage/' . $product->foto_pc) }}" alt="{{ $product->nama_pc }}">
+                                <img src="{{ asset('storage/' . $product->foto_pc) }}" alt="{{ $product->nama_pc }}" loading="lazy">
                             @else
                                 <div style="height:100%; display:flex; align-items:center; justify-content:center; background:#eee;">No Image</div>
                             @endif
@@ -208,7 +178,7 @@
     <script>
         function searchProduct() {
             const keyword = document.getElementById("searchInput").value.toLowerCase();
-            const cards = document.querySelectorAll(".album-card");
+            const cards = document.querySelectorAll(".album-grid .album-card");
             const pagination = document.querySelector(".pagination-container");
 
             cards.forEach(card => {
@@ -221,10 +191,6 @@
             } else if (pagination) {
                 pagination.style.display = "flex";
             }
-        }
-        function fillSearch(name) {
-            document.getElementById("searchInput").value = name;
-            searchProduct();
         }
     </script>
 </body>
