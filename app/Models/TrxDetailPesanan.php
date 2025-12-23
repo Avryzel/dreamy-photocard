@@ -20,6 +20,6 @@ class TrxDetailPesanan extends Model
 
     public function photocard(): BelongsTo
     {
-        return $this->belongsTo(MsPhotocard::class, 'ms_photocard_id');
+        return $this->belongsTo(MsPhotocard::class, 'idPhotocard');
     }
 }
