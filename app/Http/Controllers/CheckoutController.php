@@ -61,7 +61,7 @@ class CheckoutController extends Controller
 
             DB::commit();
 
-            $adminPhone = "628214931198";
+            $adminPhone = "6282114931198";
             $waUrl = "https://wa.me/" . $adminPhone . "?text=" . urlencode($waMessage);
 
             return redirect()->away($waUrl);
