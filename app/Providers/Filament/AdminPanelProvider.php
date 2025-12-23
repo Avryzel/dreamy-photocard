@@ -30,8 +30,12 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => '#9FA8DA',
             ])
+            ->renderHook(
+                'panels::auth.login.form.before',
+                fn () => view('filament.custom-login-style')
+            )
             ->userMenuItems([
                 MenuItem::make()
                     ->label('Profile Saya')
