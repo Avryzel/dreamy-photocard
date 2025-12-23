@@ -9,7 +9,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $latestProducts = MsPhotocard::orderBy('created_at', 'desc')->take(4)->get();
+        $latestProducts = MsPhotocard::latest()->paginate(10); 
+
         $bestSellers = MsPhotocard::inRandomOrder()->take(4)->get();
 
         return view('dreamy-store.dashboard', compact('latestProducts', 'bestSellers'));

@@ -27,18 +27,13 @@
         .store-logo { font-size: 1.2rem; font-weight: bold; color: white; margin-right: 10px; white-space: nowrap; }
 
         #searchInput {
-            flex: 1;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 20px;
-            outline: none;
-            font-size: 14px;
-            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
+            flex: 1; padding: 10px 20px; border: none; border-radius: 20px; outline: none;
+            font-size: 14px; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);
         }
 
         .icons { display: flex; gap: 15px; align-items: center; margin-left: 10px; }
         .icon-btn { font-size: 20px; cursor: pointer; color: white; text-decoration: none; border: none; background: transparent; transition: 0.2s; }
-        .icon-btn:hover { transform: scale(1.1); text-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .icon-btn:hover { transform: scale(1.1); }
         
         .auth-text { font-size: 14px; color: white; font-weight: bold; text-decoration: none; border: 1px solid white; padding: 5px 12px; border-radius: 20px; transition: 0.3s; }
         .auth-text:hover { background: white; color: #9FA8DA; }
@@ -46,129 +41,93 @@
         .hero-image { width: 100%; height: 280px; overflow: hidden; margin-bottom: 20px; border-radius: 12px; }
         .hero-image img { width: 100%; height: 100%; object-fit: cover; }
 
-        .artist-section {
-            padding: 30px 20px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-            gap: 20px;
-            max-width: 1200px;
-            margin: auto;
-            justify-items: center;
-        }
-        .artist-card {
-            background: #fff; border-radius: 50%;
-            width: 100px; height: 100px;
-            overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,.1);
-            transition: .3s;
-            cursor: pointer;
-        }
+        .artist-section { padding: 30px 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; max-width: 1200px; margin: auto; }
+        .artist-card { background: #fff; border-radius: 50%; width: 90px; height: 90px; overflow: hidden; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,.1); transition: .3s; cursor: pointer; }
         .artist-card:hover { transform: scale(1.1); border: 3px solid #B39DDB; }
         .artist-card img { width: 100%; height: 100%; object-fit: cover; }
 
-        .section-title {
-            max-width: 1200px; margin: 20px auto 10px; padding: 0 20px;
-            font-size: 20px; font-weight: bold; color: #444; text-transform: uppercase; letter-spacing: 1px;
-            border-left: 5px solid #9FA8DA; padding-left: 15px;
-        }
+        .section-title { max-width: 1300px; margin: 30px auto 15px; padding: 0 20px; font-size: 20px; font-weight: bold; color: #444; text-transform: uppercase; letter-spacing: 1px; border-left: 5px solid #9FA8DA; padding-left: 15px; }
 
-        .album-grid {
-            padding: 10px 20px 40px;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 25px;
-            max-width: 1200px;
-            margin: auto;
-        }
-        .album-card {
-            background: #fff; border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,.05);
-            transition: .3s;
-            text-decoration: none; color: inherit;
-            display: flex; flex-direction: column;
-            position: relative;
-        }
-        .album-card:hover { transform: translateY(-8px); box-shadow: 0 10px 25px rgba(159, 168, 218, 0.4); }
+        .album-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 1300px; margin: auto; padding: 0 20px; }
+        @media (min-width: 768px) { .album-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (min-width: 1024px) { .album-grid { grid-template-columns: repeat(4, 1fr); } }
+        @media (min-width: 1280px) { .album-grid { grid-template-columns: repeat(5, 1fr); } }
+
+        .album-card { background: #fff; border-radius: 15px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,.05); transition: .3s; display: flex; flex-direction: column; height: 100%; }
+        .album-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(159, 168, 218, 0.3); }
+        .album-image { aspect-ratio: 3/4; overflow: hidden; background: #eee; }
+        .album-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        .album-info { padding: 15px; flex: 1; display: flex; flex-direction: column; }
+        .album-title { font-size: 14px; color: #555; margin-bottom: 8px; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; height: 40px; line-height: 20px; }
+        .album-price { font-size: 18px; font-weight: bold; color: #333; margin-top: auto; }
+        .stok-badge { font-size: 11px; color: #2ecc71; font-weight: bold; margin-bottom: 12px; }
+
+        .btn-cart { width: 100%; background: linear-gradient(135deg, #9FA8DA, #B39DDB); color: white; border: none; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: bold; cursor: pointer; transition: 0.3s; }
+        .btn-cart:hover { opacity: 0.9; }
+
+        .pagination-container { max-width: 1300px; margin: 40px auto; padding: 0 20px; display: flex; justify-content: center; }
         
-        .album-image { height: 220px; overflow: hidden; background: #eee; position: relative; }
-        .album-image img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .album-card:hover .album-image img { transform: scale(1.05); }
+        .custom-pagination nav > div:first-child { display: none; }
 
-        .album-info { padding: 15px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .album-title { font-size: 14px; color: #666; margin-bottom: 5px; line-height: 1.4; font-weight: 500; }
-        .album-price { font-size: 18px; font-weight: bold; color: #333; margin-bottom: 5px; }
-        .stok-badge { font-size: 11px; color: #2ecc71; font-weight: bold; margin-bottom: 10px; display: block; }
+        .custom-pagination nav span[aria-current="page"] span { 
+            background-color: #9FA8DA !important; 
+            border-color: #9FA8DA !important; 
+            color: white !important; 
+            border-radius: 8px; 
+        }
 
-        .btn-cart {
-            width: 100%;
-            background: linear-gradient(135deg, #9FA8DA, #B39DDB);
-            color: white;
-            border: none;
-            padding: 8px;
-            border-radius: 8px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
+        .custom-pagination nav a, .custom-pagination nav span { 
+            border-radius: 8px !important; 
+            margin: 0 3px; 
+            border: 1px solid #e5e7eb; 
             transition: 0.3s;
         }
-        .btn-cart:hover { opacity: 0.9; box-shadow: 0 3px 10px rgba(179, 157, 219, 0.5); }
-        
-        .main-container { padding: 20px; }
+
+        .custom-pagination nav a:hover { 
+            background-color: #F0F2FF !important; 
+            color: #9FA8DA !important; 
+            border-color: #9FA8DA !important;
+        }
     </style>
 </head>
 <body>
 
     <header class="topbar">
         <div class="store-logo">✨ DREAMY</div>
-
-        <input 
-            type="text" 
-            id="searchInput" 
-            placeholder="Search your favorite K-Pop photocard..."
-            onkeyup="searchProduct()"
-        >
-
+        <input type="text" id="searchInput" placeholder="Search your favorite bias..." onkeyup="searchProduct()">
         <div class="icons">
-            <span class="icon-btn" onclick="document.getElementById('searchInput').focus()" title="Search">🔍</span>
-            
             @auth
-                <a href="{{ route('cart') }}" class="icon-btn" title="Keranjang">🛒</a>
-                
-                <a href="{{ route('profile.index') }}" class="icon-btn" title="Profile Saya">
+                <a href="{{ route('cart') }}" class="icon-btn">🛒</a>
+                <a href="{{ route('profile.index') }}" class="icon-btn">
                     @if(auth()->user()->foto_profil)
-                        <img src="{{ asset('storage/' . auth()->user()->foto_profil) }}" style="width:30px; height:30px; border-radius:50%; border:2px solid white; object-fit:cover; vertical-align:middle;">
-                    @else
-                        <span style="font-size: 24px;">👤</span>
-                    @endif
+                        <img src="{{ asset('storage/' . auth()->user()->foto_profil) }}" style="width:30px; height:30px; border-radius:50%; border:2px solid white; object-fit:cover;">
+                    @else 👤 @endif
                 </a>
-
                 <form method="POST" action="{{ route('logout') }}" style="display:inline;">
                     @csrf
-                    <button type="submit" class="icon-btn" title="Sign Out" onclick="return confirm('Yakin ingin keluar?')">🚪</button>
+                    <button type="submit" class="icon-btn">🚪</button>
                 </form>
             @else
                 <a href="{{ route('login') }}" class="auth-text">Login</a>
-                <a href="{{ route('register') }}" class="auth-text" style="background: white; color: #9FA8DA;">Daftar</a>
             @endauth
         </div>
     </header>
 
-    <div class="main-container">
+    <div style="padding: 20px;">
         @if(session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 max-w-xl mx-auto text-center">
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4 max-w-xl mx-auto text-center shadow-sm">
                 {{ session('success') }}
             </div>
         @endif
 
-        <section class="hero-image">
+        <section class="hero-image max-w-[1260px] mx-auto">
             <img src="https://placehold.co/1200x400/9FA8DA/ffffff?text=DREAMY+K-POP+STORE" alt="Banner">
         </section>
 
         <section class="artist-section">
-            @foreach(['NCT DREAM', 'LE SSERAFIM', 'ILLIT', 'ENHYPEN', 'JENNIE', 'ROSE', 'JISOO'] as $artist)
-            <div class="artist-card" title="{{ $artist }}" onclick="fillSearch('{{ $artist }}')">
+            @foreach(['NCT', 'LESSERAFIM', 'ILLIT', 'ENHYPEN', 'JENNIE', 'ROSE', 'JISOO'] as $artist)
+            <div class="artist-card" onclick="fillSearch('{{ $artist }}')">
                 <img src="https://ui-avatars.com/api/?name={{ $artist }}&background=random&color=fff" alt="{{ $artist }}">
             </div>
             @endforeach
@@ -177,23 +136,20 @@
         <div class="section-title">LATEST PHOTOCARD</div>
         <section class="album-grid">
             @foreach($latestProducts as $product)
-                <div class="album-card" data-title="{{ $product->nama_pc }} {{ $product->deskripsi_pc }}">
+                <div class="album-card" data-title="{{ $product->nama_pc }}">
                     <a href="{{ route('product.detail', $product->idPhotocard) }}">
                         <div class="album-image">
                             @if($product->foto_pc)
                                 <img src="{{ asset('storage/' . $product->foto_pc) }}" alt="{{ $product->nama_pc }}">
                             @else
-                                <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#999; background:#eee;">No Image</div>
+                                <div style="height:100%; display:flex; align-items:center; justify-content:center; background:#eee;">No Image</div>
                             @endif
                         </div>
                     </a>
                     <div class="album-info">
-                        <div>
-                            <div class="album-title">{{ $product->nama_pc }}</div>
-                            <div class="album-price">Rp {{ number_format($product->harga_pc, 0, ',', '.') }}</div>
-                            <span class="stok-badge">Stok: {{ $product->stock_pc }}</span>
-                        </div>
-                        
+                        <div class="album-title">{{ $product->nama_pc }}</div>
+                        <div class="album-price">Rp {{ number_format($product->harga_pc, 0, ',', '.') }}</div>
+                        <span class="stok-badge">Stok: {{ $product->stock_pc }}</span>
                         @auth
                             <form action="{{ route('add-to-cart') }}" method="POST">
                                 @csrf
@@ -207,24 +163,29 @@
             @endforeach
         </section>
 
+        <div class="pagination-container py-5">
+            <div class="custom-pagination">
+                {{ $latestProducts->links() }}
+            </div>
+        </div>
+
         <div class="section-title">BEST SELLER</div>
         <section class="album-grid">
             @foreach($bestSellers as $product)
-                <div class="album-card" data-title="{{ $product->nama_pc }} {{ $product->deskripsi_pc }}">
+                <div class="album-card" data-title="{{ $product->nama_pc }}">
                     <a href="{{ route('product.detail', $product->idPhotocard) }}">
                         <div class="album-image">
                             @if($product->foto_pc)
                                 <img src="{{ asset('storage/' . $product->foto_pc) }}" alt="{{ $product->nama_pc }}">
                             @else
-                                <div style="height:100%; display:flex; align-items:center; justify-content:center; color:#999; background:#eee;">No Image</div>
+                                <div style="height:100%; display:flex; align-items:center; justify-content:center; background:#eee;">No Image</div>
                             @endif
                         </div>
                     </a>
                     <div class="album-info">
-                        <div>
-                            <div class="album-title">{{ $product->nama_pc }}</div>
-                            <div class="album-price">Rp {{ number_format($product->harga_pc, 0, ',', '.') }}</div>
-                        </div>
+                        <div class="album-title">{{ $product->nama_pc }}</div>
+                        <div class="album-price">Rp {{ number_format($product->harga_pc, 0, ',', '.') }}</div>
+                        <span class="stok-badge">Stok: {{ $product->stock_pc }}</span>
                         @auth
                             <form action="{{ route('add-to-cart') }}" method="POST">
                                 @csrf
@@ -239,30 +200,31 @@
         </section>
     </div>
 
-    <footer style="background: linear-gradient(135deg, #9FA8DA, #B39DDB); padding: 40px 20px; text-align: center; color: white; margin-top: 50px; box-shadow: 0 -4px 10px rgba(0,0,0,0.05);">
-        <div style="font-weight: bold; font-size: 1.1rem; margin-bottom: 10px;">✨ DREAMY STORE</div>
-        <p style="font-size: 13px; opacity: 0.9; margin-bottom: 15px;">Pusat koleksi photocard original dan terpercaya untuk melengkapi koleksi bias kamu.</p>
-        <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 15px; font-size: 12px; opacity: 0.8;">
-            &copy; 2025 Dreamy Store Official. Made with Deliberate Effort.
-        </div>
+    <footer style="background: linear-gradient(135deg, #9FA8DA, #B39DDB); padding: 40px; text-align: center; color: white; margin-top: 50px;">
+        <div style="font-weight: bold; margin-bottom: 10px;">✨ DREAMY STORE</div>
+        <div style="font-size: 12px; opacity: 0.8;">&copy; 2025 Dreamy Store Official. Made with Deliberate Effort.</div>
     </footer>
 
     <script>
         function searchProduct() {
             const keyword = document.getElementById("searchInput").value.toLowerCase();
             const cards = document.querySelectorAll(".album-card");
+            const pagination = document.querySelector(".pagination-container");
 
             cards.forEach(card => {
                 const title = card.getAttribute('data-title').toLowerCase();
                 card.style.display = title.includes(keyword) ? "flex" : "none";
             });
-        }
 
-        function fillSearch(artistName) {
-            const searchInput = document.getElementById("searchInput");
-            searchInput.value = artistName;
+            if (keyword.length > 0 && pagination) {
+                pagination.style.display = "none";
+            } else if (pagination) {
+                pagination.style.display = "flex";
+            }
+        }
+        function fillSearch(name) {
+            document.getElementById("searchInput").value = name;
             searchProduct();
-            searchInput.focus();
         }
     </script>
 </body>
