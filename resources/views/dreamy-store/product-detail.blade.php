@@ -84,9 +84,9 @@
         @endif
 
         @if(session('error'))
-            <div class="mb-4 p-4 bg-red-100 border-l-4 border-red-500 text-red-700 rounded shadow-sm">
-                {{ session('error') }}
-            </div>
+            <span class="px-3 py-1 rounded-full text-xs font-bold {{ $product->stock_pc <= 0 ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600' }}">
+                Stok: {{ $product->stock_pc }} {{ $product->stock_pc <= 0 ? '(Habis)' : 'Tersedia' }}
+            </span>
         @endif
 
         <div class="flex justify-center mb-8">
@@ -121,27 +121,30 @@
                     
                     <div class="flex items-center gap-4 py-2">
                         <label class="font-bold text-gray-700">Jumlah:</label>
-                        <input type="number" name="quantity" value="1" min="1" max="{{ $product->stock_pc }}" 
-                               class="border rounded-lg px-3 py-1 w-20 text-center outline-none focus:ring-2 focus:ring-indigo-400">
+                        <input type="number" name="quantity" 
+                            value="{{ $product->stock_pc <= 0 ? 0 : 1 }}" 
+                            min="{{ $product->stock_pc <= 0 ? 0 : 1 }}" 
+                            max="{{ $product->stock_pc }}" 
+                            class="border rounded-lg px-3 py-1 w-20 text-center outline-none focus:ring-2 focus:ring-indigo-400 {{ $product->stock_pc <= 0 ? 'bg-gray-100 cursor-not-allowed text-gray-400' : '' }}"
+                            {{ $product->stock_pc <= 0 ? 'disabled' : '' }}>
                     </div>
 
                     <div class="flex flex-col md:flex-row gap-3">
-                        <button type="submit" name="action" value="add_to_cart" class="btn-cart flex-1 py-4 rounded-xl font-bold transition transform hover:scale-[1.01]">
-                            🛒 Tambah ke Keranjang
+                        <button type="submit" name="action" value="add_to_cart" 
+                            class="btn-cart flex-1 py-4 rounded-xl font-bold transition transform {{ $product->stock_pc <= 0 ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:scale-[1.01]' }}"
+                            {{ $product->stock_pc <= 0 ? 'disabled' : '' }}>
+                            🛒 {{ $product->stock_pc <= 0 ? 'Stok Habis' : 'Tambah ke Keranjang' }}
                         </button>
-                        <button type="submit" name="action" value="buy_now" class="btn-buy flex-1 py-4 rounded-xl font-bold transition transform hover:scale-[1.01]">
-                            Beli Sekarang
+                        
+                        <button type="submit" name="action" value="buy_now" 
+                            class="btn-buy flex-1 py-4 rounded-xl font-bold transition transform {{ $product->stock_pc <= 0 ? 'opacity-50 cursor-not-allowed grayscale' : 'hover:scale-[1.01]' }}"
+                            {{ $product->stock_pc <= 0 ? 'disabled' : '' }}>
+                            {{ $product->stock_pc <= 0 ? 'Habis' : 'Beli Sekarang' }}
                         </button>
                     </div>
                 </form>
             @else
-                <div class="bg-gray-50 p-6 rounded-xl text-center border border-dashed">
-                    <p class="text-gray-600 mb-4 font-medium">Masuk untuk mulai mengoleksi photocard ini.</p>
-                    <a href="{{ route('login') }}" class="inline-block bg-indigo-500 text-white px-8 py-3 rounded-full font-bold shadow-md hover:bg-indigo-600 transition">
-                        Login untuk Membeli
-                    </a>
-                </div>
-            @endauth
+                @endauth
         </div>
     </div>
 

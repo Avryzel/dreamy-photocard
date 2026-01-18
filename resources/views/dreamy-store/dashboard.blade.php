@@ -120,13 +120,20 @@
                     <div class="album-info">
                         <div class="album-title">{{ $product->nama_pc }}</div>
                         <div class="album-price">Rp {{ number_format($product->harga_pc, 0, ',', '.') }}</div>
-                        <span class="stok-badge">Stok: {{ $product->stock_pc }}</span>
+                        <span class="stok-badge {{ $product->stock_pc <= 0 ? 'text-red-600 font-bold' : 'text-green-500' }}">
+                            Stok: {{ $product->stock_pc }} {{ $product->stock_pc <= 0 ? '(Habis!)' : '' }}
+                        </span>
                         @auth
                             <form action="{{ route('add-to-cart') }}" method="POST">
                                 @csrf
                                 <input type="hidden" name="id_photocard" value="{{ $product->idPhotocard }}">
                                 <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="btn-cart">+ Add to Cart</button>
+                                
+                                <button type="submit" 
+                                    class="btn-cart {{ $product->stock_pc <= 0 ? 'opacity-50 cursor-not-allowed grayscale' : '' }}"
+                                    {{ $product->stock_pc <= 0 ? 'disabled' : '' }}>
+                                    {{ $product->stock_pc <= 0 ? 'Out of Stock' : '+ Add to Cart' }}
+                                </button>
                             </form>
                         @endauth
                     </div>

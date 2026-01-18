@@ -39,6 +39,14 @@ class CheckoutController extends Controller
             $waMessage = "Halo Admin Dreamy 👋\n\nSaya ingin memesan (Order ID: #{$newOrderId}):\n\n";
 
             foreach ($cartItems as $index => $item) {
+                $photocard = $item->photocard;
+
+                if (!$photocard || $photocard->stock_pc < $item->jumlah_item) {
+                    throw new \Exception("Stok {$photocard->nama_pc} tidak mencukupi!");
+                }
+
+                $photocard->decrement('stock_pc', $item->jumlah_item);
+
                 TrxDetailPesanan::create([
                     'idPesanan'      => $newOrderId,
                     'idPhotocard'    => $item->idPhotocard,
